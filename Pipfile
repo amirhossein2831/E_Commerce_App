@@ -9,6 +9,7 @@ django-debug-toolbar = "*"
 djangorestframework = "*"
 markdown = "*"
 django-filter = "*"
+mysqlclient = "*"
 
 [dev-packages]
 
