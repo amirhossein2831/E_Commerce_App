@@ -10,6 +10,7 @@ djangorestframework = "*"
 markdown = "*"
 django-filter = "*"
 mysqlclient = "*"
+python-dotenv = "*"
 
 [dev-packages]
 
