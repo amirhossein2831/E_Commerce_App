@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "debug_toolbar",
+    'core',
 ]
 
 MIDDLEWARE = [
@@ -132,3 +133,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'COERCE_DECIMAL_PLACES': False
+}
+
+AUTH_USER_MODEL = 'core.User'
