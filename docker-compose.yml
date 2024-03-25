@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql_holding
+    restart: always
+    ports:
+      - "3030:3306"
+    volumes:
+      - ./data/db:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: holding
+      MYSQL_ROOT_PASSWORD: password
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pma_holding
+    restart: always
+    ports:
+      - "3031:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
