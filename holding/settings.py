@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'djoser',
     'debug_toolbar',
     'core',
+    'likes',
 ]
 
 MIDDLEWARE = [
