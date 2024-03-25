@@ -11,6 +11,8 @@ markdown = "*"
 django-filter = "*"
 mysqlclient = "*"
 python-dotenv = "*"
+djoser = "*"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 
