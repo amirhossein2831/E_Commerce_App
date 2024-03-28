@@ -58,3 +58,9 @@ class Product(AuditableModel):
     collection = models.ForeignKey(Collection, on_delete=models.PROTECT, related_name='products')
     promotions = models.ManyToManyField(Promotion, related_name='products')
 
+
+class Address(AuditableModel):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='addresses', null=True)
+    street = models.CharField(max_length=255)
+    city = models.CharField(max_length=255)
+    zip_code = models.CharField(max_length=5, default='-')
