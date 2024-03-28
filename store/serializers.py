@@ -10,17 +10,17 @@ class CustomerSerializer(serializers.ModelSerializer):
         fields = ['user', 'phone', 'birth_date', 'membership']
 
 
-
 class CollectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Collection
         fields = ['title', 'featured_products_id']
 
-    featured_products_id = serializers.ListField(child=serializers.IntegerField())
+    featured_products_id = serializers.ListField(child=serializers.IntegerField(), required=False)
 
     @staticmethod
     def validate_featured_products_id(value):
-        for product_id in value:
-            if not Product.objects.filter(pk=product_id).exists():
-                raise serializers.ValidationError(f"Product with ID {product_id} does not exist.")
+        if value is not None:
+            for product_id in value:
+                if not Product.objects.filter(pk=product_id).exists():
+                    raise serializers.ValidationError(f"Product with ID {product_id} does not exist.")
         return value
