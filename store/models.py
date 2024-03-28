@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.conf import settings
 
@@ -43,6 +44,11 @@ class Collection(AuditableModel):
     featured_product = models.ForeignKey('Product', on_delete=models.SET_NULL, related_name="+", null=True)
 
 
+class Promotion(AuditableModel):
+    description = models.TextField()
+    discount = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(100)])
+
+
 class Product(AuditableModel):
     title = models.CharField(max_length=255)
     slug = models.SlugField(null=True)
@@ -50,4 +56,5 @@ class Product(AuditableModel):
     unit_price = models.DecimalField(max_digits=6, decimal_places=2)
     inventory = models.PositiveIntegerField()
     collection = models.ForeignKey(Collection, on_delete=models.PROTECT, related_name='products')
-    promotions = models.ManyToManyField(Promotion)
+    promotions = models.ManyToManyField(Promotion, related_name='products')
+
