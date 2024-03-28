@@ -1,5 +1,5 @@
 """
-URL configuration for holding project.
+URL configuration for e_commerce project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.0/topics/http/urls/
@@ -22,4 +22,5 @@ urlpatterns = [
     path('__debug__/', include("debug_toolbar.urls")),
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),
+    path('store/', include('store.urls')),
 ]
