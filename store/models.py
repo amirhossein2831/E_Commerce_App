@@ -1,3 +1,6 @@
+from uuid import uuid4
+
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.conf import settings
 
@@ -36,3 +39,72 @@ class Customer(AuditableModel):
         permissions = [
             ('view_history', 'Can view history')
         ]
+
+
+class Collection(AuditableModel):
+    title = models.CharField(max_length=255)
+    featured_product = models.ForeignKey('Product', on_delete=models.SET_NULL, related_name="+", null=True)
+
+
+class Promotion(AuditableModel):
+    description = models.TextField()
+    discount = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(100)])
+
+
+class Product(AuditableModel):
+    title = models.CharField(max_length=255)
+    slug = models.SlugField(null=True)
+    description = models.TextField()
+    unit_price = models.DecimalField(max_digits=6, decimal_places=2)
+    inventory = models.PositiveIntegerField()
+    collection = models.ForeignKey(Collection, on_delete=models.PROTECT, related_name='products')
+    promotions = models.ManyToManyField(Promotion, related_name='products')
+
+
+class Review(AuditableModel):
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
+
+
+class Card(AuditableModel):
+    id = models.UUIDField(primary_key=True, default=uuid4)
+
+
+class CartItem(AuditableModel):
+    cart = models.ForeignKey(Card, on_delete=models.CASCADE, related_name='items')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='items')
+    quantity = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
+
+    class Meta:
+        unique_together = [['cart', 'product']]  # make sure the cart and products are unique
+
+
+class Address(AuditableModel):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='addresses', null=True)
+    street = models.CharField(max_length=255)
+    city = models.CharField(max_length=255)
+    zip_code = models.CharField(max_length=5, default='-')
+
+
+
+class Order(models.Model):
+    PAYMENT_STATUS_PENDING = 'P'
+    PAYMENT_STATUS_COMPLETE = 'C'
+    PAYMENT_STATUS_FAILED = 'F'
+
+    PAYMENT_STATUS_CHOICES = [
+        (PAYMENT_STATUS_PENDING, 'Pending'),
+        (PAYMENT_STATUS_COMPLETE, 'Complete'),
+        (PAYMENT_STATUS_FAILED, 'Failed'),
+    ]
+    payment_status = models.CharField(max_length=1, choices=PAYMENT_STATUS_CHOICES, default=PAYMENT_STATUS_PENDING)
+    customer = models.ForeignKey(Customer, on_delete=models.PROTECT)
+
+
+class OrderItem(AuditableModel):
+    order = models.ForeignKey(Order, on_delete=models.PROTECT, related_name='items')
+    product = models.ForeignKey(Order, on_delete=models.PROTECT, related_name='items')
+    quantity = models.PositiveSmallIntegerField()
+    unit_price = models.DecimalField(max_digits=6, decimal_places=2)
+
