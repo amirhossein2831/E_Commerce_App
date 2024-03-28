@@ -1,8 +1,10 @@
 from django.db import models
 from django.conf import settings
+from common.models import AuditableModel
 
 
-class Customer(settings.BASE_MODEL):
+
+class Customer(AuditableModel):
     BRONZE_MEMBERSHIP = 'B'
     SILVER_MEMBERSHIP = 'S'
     GOLD_MEMBERSHIP = 'G'

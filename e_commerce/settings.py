@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'djoser',
     'core',
+    'common',
+    'store',
     'likes',
 ]
 
@@ -159,7 +161,6 @@ SIMPLE_JWT = {
 }
 
 AUTH_USER_MODEL = 'core.User'
-BASE_MODEL = 'core.AuditableModel'
 
 INTERNAL_IPS = [
     "127.0.0.1",
