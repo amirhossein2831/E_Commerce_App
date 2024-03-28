@@ -59,6 +59,12 @@ class Product(AuditableModel):
     promotions = models.ManyToManyField(Promotion, related_name='products')
 
 
+class Review(AuditableModel):
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
+
+
 class Address(AuditableModel):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='addresses', null=True)
     street = models.CharField(max_length=255)
