@@ -18,7 +18,8 @@ class CollectionSerializer(serializers.ModelSerializer):
 
     featured_products_id = serializers.ListField(child=serializers.IntegerField())
 
-    def validate_featured_products_id(self, value):
+    @staticmethod
+    def validate_featured_products_id(value):
         for product_id in value:
             if not Product.objects.filter(pk=product_id).exists():
                 raise serializers.ValidationError(f"Product with ID {product_id} does not exist.")
