@@ -6,9 +6,9 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
-from permissoin import IsAdminUserOrReadOnly
-from store import serializers
-from store.models import Customer, Collection
+from . import serializers
+from .models import Customer, Collection
+from .permissoin import IsAdminUserOrReadOnly
 
 
 class CustomerViewSet(ModelViewSet):
