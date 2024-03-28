@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.conf import settings
@@ -63,6 +65,19 @@ class Review(AuditableModel):
     title = models.CharField(max_length=255)
     description = models.TextField()
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
+
+
+class Card(AuditableModel):
+    id = models.UUIDField(primary_key=True, default=uuid4)
+
+
+class CartItem(AuditableModel):
+    cart = models.ForeignKey(Card, on_delete=models.CASCADE, related_name='items')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='items')
+    quantity = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
+
+    class Meta:
+        unique_together = [['cart', 'product']]  # make sure the cart and products are unique
 
 
 class Address(AuditableModel):
