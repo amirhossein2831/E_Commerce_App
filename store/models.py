@@ -31,3 +31,8 @@ class Customer(AuditableModel):
     phone = models.CharField(max_length=11)
     birth_date = models.DateField()
     membership = models.CharField(max_length=1, choices=MEMBERSHIP_PLAN, default=BRONZE_MEMBERSHIP)
+
+    class Meta:
+        permissions = [
+            ('view_history', 'Can view history')
+        ]
