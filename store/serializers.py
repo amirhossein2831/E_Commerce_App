@@ -1,6 +1,5 @@
 from rest_framework import serializers
-
-from store.models import Customer
+from store.models import *
 
 
 class CustomerSerializer(serializers.ModelSerializer):
@@ -10,3 +9,8 @@ class CustomerSerializer(serializers.ModelSerializer):
         model = Customer
         fields = ['user', 'phone', 'birth_date', 'membership']
 
+
+
+class CollectionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Collection

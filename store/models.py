@@ -73,7 +73,7 @@ class Card(AuditableModel):
 
 class CartItem(AuditableModel):
     cart = models.ForeignKey(Card, on_delete=models.CASCADE, related_name='items')
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='items')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='cart_items')
     quantity = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
 
     class Meta:
@@ -104,7 +104,7 @@ class Order(models.Model):
 
 class OrderItem(AuditableModel):
     order = models.ForeignKey(Order, on_delete=models.PROTECT, related_name='items')
-    product = models.ForeignKey(Order, on_delete=models.PROTECT, related_name='items')
+    product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='order_items')
     quantity = models.PositiveSmallIntegerField()
     unit_price = models.DecimalField(max_digits=6, decimal_places=2)
 
