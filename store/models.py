@@ -42,3 +42,12 @@ class Collection(AuditableModel):
     title = models.CharField(max_length=255)
     featured_product = models.ForeignKey('Product', on_delete=models.SET_NULL, related_name="+", null=True)
 
+
+class Product(AuditableModel):
+    title = models.CharField(max_length=255)
+    slug = models.SlugField(null=True)
+    description = models.TextField()
+    unit_price = models.DecimalField(max_digits=6, decimal_places=2)
+    inventory = models.PositiveIntegerField()
+    collection = models.ForeignKey(Collection, on_delete=models.PROTECT, related_name='products')
+    promotions = models.ManyToManyField(Promotion)
