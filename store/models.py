@@ -36,3 +36,9 @@ class Customer(AuditableModel):
         permissions = [
             ('view_history', 'Can view history')
         ]
+
+
+class Collection(AuditableModel):
+    title = models.CharField(max_length=255)
+    featured_product = models.ForeignKey('Product', on_delete=models.SET_NULL, related_name="+", null=True)
+
