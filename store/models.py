@@ -1,8 +1,8 @@
 from uuid import uuid4
 
+from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
-from django.conf import settings
 
 
 class AuditableModel(models.Model):
@@ -85,7 +85,6 @@ class Address(AuditableModel):
     street = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
     zip_code = models.CharField(max_length=5, default='-')
-
 
 
 class Order(models.Model):

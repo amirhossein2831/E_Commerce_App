@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from store.models import *
+from . import validator
 
 
 class CustomerSerializer(serializers.ModelSerializer):
@@ -19,8 +20,5 @@ class CollectionSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def validate_featured_products_id(value):
-        if value is not None:
-            for product_id in value:
-                if not Product.objects.filter(pk=product_id).exists():
-                    raise serializers.ValidationError(f"Product with ID {product_id} does not exist.")
-        return value
+        return validator.has_relation(Product, serializers, value, many=True)
+
