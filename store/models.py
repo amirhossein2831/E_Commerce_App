@@ -3,6 +3,7 @@ from uuid import uuid4
 from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
+from django.utils.text import slugify
 
 
 class AuditableModel(models.Model):
@@ -59,6 +60,12 @@ class Product(AuditableModel):
     inventory = models.PositiveIntegerField()
     collection = models.ForeignKey(Collection, on_delete=models.PROTECT, related_name='products')
     promotions = models.ManyToManyField(Promotion, related_name='products')
+
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
 
 
 class Review(AuditableModel):

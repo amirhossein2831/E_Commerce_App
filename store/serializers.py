@@ -24,7 +24,8 @@ class CollectionSerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     promotions = serializers.PrimaryKeyRelatedField(queryset=Promotion.objects.all(), many=True, allow_empty=True,
                                                     required=False)
+    slug = serializers.CharField(read_only=True)
 
     class Meta:
         model = Product
-        fields = ['title', 'description', 'unit_price', 'inventory', 'collection', 'promotions']
+        fields = ['title', 'slug', 'description', 'unit_price', 'inventory', 'collection', 'promotions']
