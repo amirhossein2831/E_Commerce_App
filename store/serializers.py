@@ -12,6 +12,8 @@ class CustomerSerializer(serializers.ModelSerializer):
 
 
 class CustomerAddressSerializer(serializers.ModelSerializer):
+    zip_code = serializers.CharField(required=False, allow_blank=True)
+
     class Meta:
         model = Address
         fields = ['street', 'city', 'zip_code']

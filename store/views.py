@@ -37,7 +37,7 @@ class CustomerAddressViewSet(ModelViewSet):
     permission_classes = [IsAdminUser]
 
     def get_queryset(self):
-        return Review.objects.filter(customer=self.kwargs['customers_pk'])
+        return Address.objects.filter(customer=self.kwargs['customers_pk'])
 
     def perform_create(self, serializer):
         serializer.save(customer=Customer(pk=self.kwargs['customers_pk']))

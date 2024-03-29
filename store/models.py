@@ -91,7 +91,7 @@ class Address(AuditableModel):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='addresses', null=True)
     street = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
-    zip_code = models.CharField(max_length=5, default='-')
+    zip_code = models.CharField(max_length=5, default='')
 
 
 class Order(models.Model):
