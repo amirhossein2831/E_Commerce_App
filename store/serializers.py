@@ -44,3 +44,9 @@ class ProductPromotionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Promotion
         fields = ['id', 'description', 'discount']
+
+
+class ProductReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = ['id', 'title', 'description']
