@@ -29,3 +29,12 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ['title', 'slug', 'description', 'unit_price', 'inventory', 'collection', 'promotions']
+
+
+class PromotionSerializer(serializers.ModelSerializer):
+    products = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all(), many=True, allow_empty=True,
+                                                  required=False)
+
+    class Meta:
+        model = Promotion
+        fields = ['description', 'discount', 'products']
