@@ -35,6 +35,18 @@ class CustomerViewSet(ModelViewSet):
             return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+class LoginCustomerAddressViewSet(ModelViewSet):
+    queryset = Address.objects.all()
+    serializer_class = serializers.CustomerAddressSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Address.objects.filter(customer_id=self.request.user.id).all()
+
+    def perform_create(self, serializer):
+        serializer.save(customer_id=self.request.user.id)
+
+
 class CustomerAddressViewSet(ModelViewSet):
     queryset = Address.objects.all()
     serializer_class = serializers.CustomerAddressSerializer

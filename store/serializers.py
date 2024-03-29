@@ -20,7 +20,7 @@ class CustomerAddressSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Address
-        fields = ['street', 'city', 'zip_code']
+        fields = ['id', 'street', 'city', 'zip_code']
 
 
 class CollectionSerializer(serializers.ModelSerializer):
