@@ -32,8 +32,15 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class PromotionSerializer(serializers.ModelSerializer):
-    products = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    products = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all(), many=True, allow_empty=True,
+                                                  required=False)
 
     class Meta:
         model = Promotion
         fields = ['description', 'discount', 'products']
+
+
+class ProductPromotionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Promotion
+        fields = ['description', 'discount']
