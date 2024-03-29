@@ -32,12 +32,12 @@ class CustomerViewSet(ModelViewSet):
 
 
 class CollectionViewSet(ModelViewSet):
-    queryset = Collection.objects.all()
+    queryset = Collection.objects.prefetch_related('products').all()
     serializer_class = serializers.CollectionSerializer
     permission_classes = [IsAuthAdminUserOrAuthReadOnly]
 
 
 class ProductViewSet(ModelViewSet):
-    queryset = Product.objects.all()
+    queryset = Product.objects.prefetch_related('promotions').all()
     serializer_class = serializers.ProductSerializer
     permission_classes = [IsAuthAdminUserOrAuthReadOnly]
