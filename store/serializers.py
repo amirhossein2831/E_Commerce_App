@@ -13,10 +13,11 @@ class CustomerSerializer(serializers.ModelSerializer):
 
 class CollectionSerializer(serializers.ModelSerializer):
     featured_product_id = serializers.IntegerField(required=False)
+    products = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     class Meta:
         model = Collection
-        fields = ['title', 'featured_product_id']
+        fields = ['title', 'featured_product_id', 'products']
 
     @staticmethod
     def validate_featured_product_id(value):
