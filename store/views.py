@@ -33,7 +33,7 @@ class CustomerViewSet(ModelViewSet):
 
 class CustomerAddressViewSet(ModelViewSet):
     queryset = Address.objects.all()
-    serializer_class = serializers.CustomerAddressSerializezr
+    serializer_class = serializers.CustomerAddressSerializer
     permission_classes = [IsAdminUser]
 
     def get_queryset(self):

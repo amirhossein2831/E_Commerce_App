@@ -11,6 +11,12 @@ class CustomerSerializer(serializers.ModelSerializer):
         fields = ['user', 'phone', 'birth_date', 'membership']
 
 
+class CustomerAddressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Address
+        fields = ['street', 'city', 'zip_code']
+
+
 class CollectionSerializer(serializers.ModelSerializer):
     featured_product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all(), allow_null=True,
                                                           required=False)
