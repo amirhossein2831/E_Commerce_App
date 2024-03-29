@@ -16,7 +16,9 @@ class CustomerViewSet(ModelViewSet):
     permission_classes = [IsAdminUser]
 
     def get_serializer_class(self):
-        if self.request.method in ['PUT']:
+        if self.action in ['retrieve', 'update', 'partial_update']:
+            return serializers.MeCustomerSerializer
+        if self.request.method == 'PUT':
             return serializers.MeCustomerSerializer
         return serializers.CustomerSerializer
 
@@ -29,6 +31,7 @@ class CustomerViewSet(ModelViewSet):
         elif request.method == 'PUT':
             serializer = serializers.MeCustomerSerializer(customer, request.data)
             serializer.is_valid(raise_exception=True)
+            serializer.save(user=request.user)
             return Response(serializer.data, status=status.HTTP_200_OK)
 
 
