@@ -47,3 +47,9 @@ class PromotionViewSet(ModelViewSet):
     queryset = Promotion.objects.prefetch_related('products').all()
     serializer_class = serializers.PromotionSerializer
     permission_classes = [IsAuthAdminUserOrAuthReadOnly]
+
+
+class ProductPromotionViewSet(ModelViewSet):
+    queryset = Promotion.objects.all()
+    serializer_class = serializers.ProductPromotionSerializer
+    permission_classes = [IsAuthAdminUserOrAuthReadOnly]

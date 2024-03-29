@@ -18,7 +18,7 @@ class CollectionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Collection
-        fields = ['title', 'featured_product', 'products']
+        fields = ['id', 'title', 'featured_product', 'products']
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -28,7 +28,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ['title', 'slug', 'description', 'unit_price', 'inventory', 'collection', 'promotions']
+        fields = ['id', 'title', 'slug', 'description', 'unit_price', 'inventory', 'collection', 'promotions']
 
 
 class PromotionSerializer(serializers.ModelSerializer):
@@ -37,10 +37,10 @@ class PromotionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Promotion
-        fields = ['description', 'discount', 'products']
+        fields = ['id', 'description', 'discount', 'products']
 
 
 class ProductPromotionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Promotion
-        fields = ['description', 'discount']
+        fields = ['id', 'description', 'discount']
