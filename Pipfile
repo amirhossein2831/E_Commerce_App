@@ -13,6 +13,7 @@ mysqlclient = "*"
 python-dotenv = "*"
 djoser = "*"
 djangorestframework-simplejwt = "*"
+drf-nested-routers = "*"
 
 [dev-packages]
 
