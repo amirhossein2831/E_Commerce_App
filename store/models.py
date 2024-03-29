@@ -1,8 +1,9 @@
 from uuid import uuid4
 
+from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
-from django.conf import settings
+from django.utils.text import slugify
 
 
 class AuditableModel(models.Model):
@@ -61,6 +62,12 @@ class Product(AuditableModel):
     promotions = models.ManyToManyField(Promotion, related_name='products')
 
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+
+
 class Review(AuditableModel):
     title = models.CharField(max_length=255)
     description = models.TextField()
@@ -84,8 +91,7 @@ class Address(AuditableModel):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='addresses', null=True)
     street = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
-    zip_code = models.CharField(max_length=5, default='-')
-
+    zip_code = models.CharField(max_length=5, default='')
 
 
 class Order(models.Model):
@@ -107,4 +113,3 @@ class OrderItem(AuditableModel):
     product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='order_items')
     quantity = models.PositiveSmallIntegerField()
     unit_price = models.DecimalField(max_digits=6, decimal_places=2)
-

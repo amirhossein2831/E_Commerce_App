@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'debug_toolbar',
     'djoser',
+    'drf_yasg',
     'core',
     'store',
     'likes',
@@ -152,8 +153,17 @@ REST_FRAMEWORK = {
 
 DJOSER = {
     'SERIALIZERS': {
+        'user': 'core.serializers.UserCreateSerializer',
         'user_create': 'core.serializers.UserCreateSerializer',
         'current_user': 'core.serializers.UserSerializer'
+    }
+}
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Basic': {
+            'type': 'basic'
+        }
     }
 }
 
