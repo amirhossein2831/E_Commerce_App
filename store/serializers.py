@@ -1,6 +1,6 @@
 from rest_framework import serializers
+
 from store.models import *
-from . import validator
 
 
 class CustomerSerializer(serializers.ModelSerializer):
@@ -12,13 +12,19 @@ class CustomerSerializer(serializers.ModelSerializer):
 
 
 class CollectionSerializer(serializers.ModelSerializer):
-    featured_product_id = serializers.IntegerField(required=False)
+    featured_product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all(), allow_null=True,
+                                                          required=False)
     products = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     class Meta:
         model = Collection
-        fields = ['title', 'featured_product_id', 'products']
+        fields = ['title', 'featured_product', 'products']
 
-    @staticmethod
-    def validate_featured_product_id(value):
-        return validator.has_relation(Product, serializers, value)
+
+class ProductSerializer(serializers.ModelSerializer):
+    promotions = serializers.PrimaryKeyRelatedField(queryset=Promotion.objects.all(), many=True, allow_empty=True,
+                                                    required=False)
+
+    class Meta:
+        model = Product
+        fields = ['title', 'description', 'unit_price', 'inventory', 'collection', 'promotions']

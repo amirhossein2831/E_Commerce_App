@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from . import serializers
-from .models import Customer, Collection
+from .models import Customer, Collection, Product
 from .permissoin import IsAuthAdminUserOrAuthReadOnly
 
 
@@ -36,3 +36,8 @@ class CollectionViewSet(ModelViewSet):
     serializer_class = serializers.CollectionSerializer
     permission_classes = [IsAuthAdminUserOrAuthReadOnly]
 
+
+class ProductViewSet(ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = serializers.ProductSerializer
+    permission_classes = [IsAuthAdminUserOrAuthReadOnly]
