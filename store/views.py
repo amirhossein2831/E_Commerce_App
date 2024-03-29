@@ -51,5 +51,12 @@ class PromotionViewSet(ModelViewSet):
 
 class ProductPromotionViewSet(ModelViewSet):
     queryset = Promotion.objects.all()
+
+    def get_queryset(self):
+        return Promotion.objects.filter(products=self.kwargs['products_pk'])
+
+    def perform_create(self, serializer):
+        serializer.save(products=[self.kwargs['products_pk']])
+
     serializer_class = serializers.ProductPromotionSerializer
     permission_classes = [IsAuthAdminUserOrAuthReadOnly]
