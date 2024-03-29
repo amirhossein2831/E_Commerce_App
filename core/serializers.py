@@ -20,7 +20,8 @@ class UserCreateSerializer(BaseUserCreateSerializer):
 
 
 class UserSerializer(BaseUserSerializer):
+    is_superuser = serializers.BooleanField(read_only=True)
     is_staff = serializers.BooleanField(read_only=True)
 
     class Meta(BaseUserSerializer.Meta):
-        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'is_staff']
+        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'is_superuser', 'is_staff']
