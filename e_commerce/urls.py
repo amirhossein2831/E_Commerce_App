@@ -22,9 +22,9 @@ from rest_framework import permissions
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="My API",
+        title="E Commerce API",
         default_version='v1',
-        description="My API description",
+        description="this is the document for the for E Commerce site",
         terms_of_service="https://www.example.com/terms/",
         contact=openapi.Contact(email="contact@example.com"),
         license=openapi.License(name="Awesome License"),
