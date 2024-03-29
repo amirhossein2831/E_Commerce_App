@@ -14,4 +14,8 @@ promotions_router.register('promotions', views.ProductPromotionViewSet, basename
 reviews_router = routers.NestedDefaultRouter(route, 'products', lookup='products')
 reviews_router.register('reviews', views.ProductReviewViewSet, basename='reviews')
 
-urlpatterns = route.urls + promotions_router.urls + reviews_router.urls
+addresses_router = routers.NestedDefaultRouter(route, 'customers', lookup='customers')
+addresses_router.register('addresses', views.CustomerAddressViewSet, basename='addresses')
+
+
+urlpatterns = route.urls + promotions_router.urls + reviews_router.urls + addresses_router.urls
