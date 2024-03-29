@@ -13,23 +13,21 @@ from .permissoin import IsAuthAdminUserOrAuthReadOnly
 
 class CustomerViewSet(ModelViewSet):
     queryset = Customer.objects.all()
-    serializer_class = serializers.CustomerSerializer
     permission_classes = [IsAdminUser]
 
-    def perform_create(self, serializer):
-        if not self.request.user.is_superuser and not self.request.user.is_staff:
-            serializer.save(user=self.request.user)
-        else:
-            serializer.save()
+    def get_serializer_class(self):
+        if self.request.method in ['PUT']:
+            return serializers.MeCustomerSerializer
+        return serializers.CustomerSerializer
 
     @action(detail=False, methods=['GET', 'PUT'], permission_classes=[IsAuthenticated])
     def me(self, request: Request) -> Response:
         customer = get_object_or_404(Customer, user=request.user)
         if request.method == 'GET':
-            serializer = serializers.CustomerSerializer(customer)
+            serializer = serializers.MeCustomerSerializer(customer)
             return Response(serializer.data, status=status.HTTP_200_OK)
         elif request.method == 'PUT':
-            serializer = serializers.CustomerSerializer(customer, request.data)
+            serializer = serializers.MeCustomerSerializer(customer, request.data)
             serializer.is_valid(raise_exception=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
 

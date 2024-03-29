@@ -8,14 +8,11 @@ class CustomerSerializer(serializers.ModelSerializer):
         model = Customer
         fields = ['user', 'phone', 'birth_date', 'membership']
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
 
-        staff = self.context["request"].user.is_staff
-        superuser = self.context["request"].user.is_superuser
-
-        if not staff and not superuser:
-            self.fields.pop('user')
+class MeCustomerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Customer
+        fields = ['phone', 'birth_date', 'membership']
 
 
 class CustomerAddressSerializer(serializers.ModelSerializer):
