@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from . import serializers
-from .models import Customer, Collection, Product, Promotion, Review
+from .models import Customer, Collection, Product, Promotion, Review, Address
 from .permissoin import IsAuthAdminUserOrAuthReadOnly
 
 
@@ -29,6 +29,18 @@ class CustomerViewSet(ModelViewSet):
             serializer = serializers.CustomerSerializer(customer, request.data)
             serializer.is_valid(raise_exception=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class CustomerAddressViewSet(ModelViewSet):
+    queryset = Address.objects.all()
+    serializer_class = serializers.CustomerAddressSerializezr
+    permission_classes = [IsAdminUser]
+
+    def get_queryset(self):
+        return Review.objects.filter(customer=self.kwargs['customers_pk'])
+
+    def perform_create(self, serializer):
+        serializer.save(customer=Customer(pk=self.kwargs['customers_pk']))
 
 
 class CollectionViewSet(ModelViewSet):
@@ -61,8 +73,6 @@ class ProductPromotionViewSet(ModelViewSet):
         serializer.save(products=[self.kwargs['products_pk']])
 
 
-
-
 class ProductReviewViewSet(ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = serializers.ProductReviewSerializer
@@ -73,4 +83,3 @@ class ProductReviewViewSet(ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(product=Product(pk=self.kwargs['products_pk']))
-
