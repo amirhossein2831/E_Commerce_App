@@ -43,7 +43,7 @@ class Customer(AuditableModel):
 
 class Collection(AuditableModel):
     title = models.CharField(max_length=255)
-    featured_products = models.ForeignKey('Product', on_delete=models.SET_NULL, related_name="+", null=True)
+    featured_product = models.ForeignKey('Product', on_delete=models.SET_NULL, related_name="+", null=True)
 
 
 class Promotion(AuditableModel):
@@ -106,4 +106,3 @@ class OrderItem(AuditableModel):
     product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='order_items')
     quantity = models.PositiveSmallIntegerField()
     unit_price = models.DecimalField(max_digits=6, decimal_places=2)
-
