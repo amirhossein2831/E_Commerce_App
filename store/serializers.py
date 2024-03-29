@@ -4,11 +4,18 @@ from store.models import *
 
 
 class CustomerSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(read_only=True)
-
     class Meta:
         model = Customer
         fields = ['user', 'phone', 'birth_date', 'membership']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        staff = self.context["request"].user.is_staff
+        superuser = self.context["request"].user.is_superuser
+
+        if not staff and not superuser:
+            self.fields.pop('user')
 
 
 class CustomerAddressSerializer(serializers.ModelSerializer):

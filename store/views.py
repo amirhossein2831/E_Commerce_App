@@ -17,7 +17,10 @@ class CustomerViewSet(ModelViewSet):
     permission_classes = [IsAdminUser]
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        if not self.request.user.is_superuser and not self.request.user.is_staff:
+            serializer.save(user=self.request.user)
+        else:
+            serializer.save()
 
     @action(detail=False, methods=['GET', 'PUT'], permission_classes=[IsAuthenticated])
     def me(self, request: Request) -> Response:
@@ -34,7 +37,7 @@ class CustomerViewSet(ModelViewSet):
 class CustomerAddressViewSet(ModelViewSet):
     queryset = Address.objects.all()
     serializer_class = serializers.CustomerAddressSerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthAdminUserOrAuthReadOnly]
 
     def get_queryset(self):
         return Address.objects.filter(customer=self.kwargs['customers_pk'])
