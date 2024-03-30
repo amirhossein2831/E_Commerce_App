@@ -110,7 +110,7 @@ class CartViewSet(DestroyModelMixin, RetrieveModelMixin, CreateModelMixin, Gener
 
 class CartItemViewSet(ModelViewSet):
     queryset = CartItem.objects.all()
-    serializer_class = serializers.CartItemSerializer
+    http_method_names = ['get', 'post', 'patch', 'delete']
 
     def get_queryset(self):
         return CartItem.objects.filter(cart=self.kwargs['carts_pk']).select_related('product').all()
@@ -121,4 +121,6 @@ class CartItemViewSet(ModelViewSet):
     def get_serializer_class(self):
         if self.request.method == 'POST':
             return serializers.AddCartItemSerializer
+        if self.request.method in ['PATCH']:
+            return serializers.UpdateCartSerializer
         return serializers.CartItemSerializer
