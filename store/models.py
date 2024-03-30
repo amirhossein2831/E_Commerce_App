@@ -94,7 +94,7 @@ class Address(AuditableModel):
     zip_code = models.CharField(max_length=5, default='')
 
 
-class Order(models.Model):
+class Order(AuditableModel):
     PAYMENT_STATUS_PENDING = 'P'
     PAYMENT_STATUS_COMPLETE = 'C'
     PAYMENT_STATUS_FAILED = 'F'
