@@ -1,5 +1,5 @@
 from rest_framework import serializers
-
+from django.db import transaction
 from store.models import *
 
 
@@ -118,3 +118,56 @@ class CartSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cart
         fields = ['id', 'items', 'total_price']
+
+
+class OrderItemSerializer(serializers.ModelSerializer):
+    product = ProductSerializer(read_only=True)
+
+    class Meta:
+        model = OrderItem
+        fields = ['id', 'product', 'quantity', 'unit_price']
+
+
+class OrderSerializer(serializers.ModelSerializer):
+    placed_at = serializers.DateTimeField(source='created_at')
+    items = OrderItemSerializer(many=True)
+
+    class Meta:
+        model = Order
+        fields = ['id', 'customer', 'payment_status', 'placed_at', 'items']
+
+
+class CreateOrderSerializer(serializers.Serializer):
+    cart = serializers.PrimaryKeyRelatedField(queryset=Cart.objects.all())
+
+    @staticmethod
+    def validate_cart(value):
+        if CartItem.objects.filter(cart=value).count() == 0:
+            raise serializers.ValidationError('the cart is empty')
+
+    @transaction.atomic
+    def save(self, **kwargs):
+        cart = self.validated_data['cart']
+        customer, created = Customer.objects.get_or_create(user=self.context.get('user'))
+        order = Order.objects.create(customer=customer)
+        cart_items = CartItem.objects.filter(cart=cart).select_related('product')
+
+        order_items = [
+            OrderItem(
+                order=order,
+                product=item.product,
+                quantity=item.quantity,
+                unit_price=item.product.unit_price
+            )
+            for item in cart_items
+        ]
+        OrderItem.objects.bulk_create(order_items)
+        cart.delete()
+
+        return order
+
+
+class UpdateOrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = ['payment_status']
