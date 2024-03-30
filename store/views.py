@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404
+from djoser import permissions
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, DestroyModelMixin
@@ -110,6 +111,11 @@ class CartViewSet(DestroyModelMixin, RetrieveModelMixin, CreateModelMixin, Gener
 class CartItemViewSet(ModelViewSet):
     queryset = CartItem.objects.all()
     serializer_class = serializers.CartItemSerializer
+
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return serializers.AddCartItemSerializer
+        return serializers.CartItemSerializer
 
     def get_queryset(self):
         return CartItem.objects.filter(cart=self.kwargs['carts_pk']).select_related('product').all()
