@@ -129,8 +129,8 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    placed_at = serializers.DateTimeField(source='created_at', read_only=True)
-    items = OrderItemSerializer(many=True, read_only=True)
+    placed_at = serializers.DateTimeField(source='created_at')
+    items = OrderItemSerializer(many=True)
 
     class Meta:
         model = Order
@@ -165,3 +165,9 @@ class CreateOrderSerializer(serializers.Serializer):
         cart.delete()
 
         return order
+
+
+class UpdateOrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = ['payment_status']
