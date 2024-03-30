@@ -74,17 +74,17 @@ class Review(AuditableModel):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
 
 
-class Card(AuditableModel):
+class Cart(AuditableModel):
     id = models.UUIDField(primary_key=True, default=uuid4)
 
 
 class CartItem(AuditableModel):
-    cart = models.ForeignKey(Card, on_delete=models.CASCADE, related_name='items')
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='cart_items')
     quantity = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
 
     class Meta:
-        unique_together = [['cart', 'product']]  # make sure the cart and products are unique
+        unique_together = [['cart', 'product']]
 
 
 class Address(AuditableModel):
