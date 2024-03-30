@@ -11,6 +11,7 @@ from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from . import serializers
 from .models import Customer, Collection, Product, Promotion, Review, Address, Cart, CartItem, Order
 from .permissoin import IsAuthAdminUserOrAuthReadOnly
+from .serializers import OrderSerializer, CreateOrderSerializer
 
 
 class CustomerViewSet(ModelViewSet):
@@ -144,3 +145,11 @@ class OrderViewSet(ModelViewSet):
 
     def get_serializer_context(self, **kwargs):
         return {'user': self.request.user}
+
+    def create(self, request, *args, **kwargs):
+        serializer = CreateOrderSerializer(data=request.data, context=self.get_serializer_context())
+        serializer.is_valid(raise_exception=True)
+        order = serializer.save()
+        serializer = OrderSerializer(order)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)

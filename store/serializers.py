@@ -159,4 +159,4 @@ class CreateOrderSerializer(serializers.Serializer):
         OrderItem.objects.bulk_create(order_items)
         cart.delete()
 
-        return self.instance
+        return order
