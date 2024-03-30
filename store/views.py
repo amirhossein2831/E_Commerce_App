@@ -1,10 +1,11 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.decorators import action
+from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, DestroyModelMixin
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.request import Request
 from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, GenericViewSet
 
 from . import serializers
 from .models import Customer, Collection, Product, Promotion, Review, Address, Cart
@@ -101,6 +102,6 @@ class ProductReviewViewSet(ModelViewSet):
         serializer.save(product=Product(pk=self.kwargs['products_pk']))
 
 
-class CartViewSet(ModelViewSet):
-    queryset = Cart.objects.all()
+class CartViewSet(DestroyModelMixin, RetrieveModelMixin, CreateModelMixin, GenericViewSet):
+    queryset = Cart.objects.prefetch_related('items', 'items__product').all()
     serializer_class = serializers.CartSerializer
