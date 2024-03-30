@@ -105,7 +105,7 @@ class ProductReviewViewSet(ModelViewSet):
 
 
 class CartViewSet(DestroyModelMixin, RetrieveModelMixin, CreateModelMixin, GenericViewSet):
-    queryset = Cart.objects.prefetch_related('items', 'items__product').all()
+    queryset = Cart.objects.prefetch_related('items', 'items__product', 'items__product__promotions').all()
     serializer_class = serializers.CartSerializer
 
 
@@ -134,9 +134,11 @@ class OrderViewSet(ModelViewSet):
 
     def get_queryset(self):
         if self.request.user.is_staff or self.request.user.is_superuser:
-            return Order.objects.all()
+            return (Order.objects.
+                    prefetch_related('items', 'items__product', 'items__product__promotions').all())
         customer, create = Customer.objects.get_or_create(user=self.request.user)
-        return Order.objects.filter(customer=customer).all()
+        return (Order.objects.filter(customer=customer).
+                prefetch_related('items', 'items__product', 'items__product__promotions').all())
 
     def get_serializer_class(self):
         if self.request.method == 'POST':
