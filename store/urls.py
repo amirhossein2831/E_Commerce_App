@@ -8,6 +8,7 @@ route.register('collections', views.CollectionViewSet)
 route.register('products', views.ProductViewSet)
 route.register('promotions', views.PromotionViewSet)
 route.register('carts', views.CartViewSet)
+route.register('orders', views.OrderViewSet)
 route.register('customers/me/addresses', views.LoginCustomerAddressViewSet)
 
 promotions_router = routers.NestedDefaultRouter(route, 'products', lookup='products')
