@@ -111,7 +111,7 @@ class CartViewSet(DestroyModelMixin, RetrieveModelMixin, CreateModelMixin, Gener
 
 class CartItemViewSet(ModelViewSet):
     queryset = CartItem.objects.all()
-    http_method_names = ['get', 'post', 'patch', 'delete']
+    http_method_names = ['head', 'options', 'get', 'post', 'patch', 'delete']
 
     def get_queryset(self):
         return CartItem.objects.filter(cart=self.kwargs['carts_pk']).select_related('product').all()
@@ -129,7 +129,12 @@ class CartItemViewSet(ModelViewSet):
 
 class OrderViewSet(ModelViewSet):
     queryset = Order.objects.all()
-    permission_classes = [IsAuthenticated]
+    http_method_names = ['head', 'options', 'get', 'post', 'patch', 'delete']
+
+    def get_permissions(self):
+        if self.request.method in ['PATCH', 'DELETE']:
+            return [IsAdminUser()]
+        return [IsAuthenticated()]
 
     def get_queryset(self):
         if self.request.user.is_staff or self.request.user.is_superuser:
