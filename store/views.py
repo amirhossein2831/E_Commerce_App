@@ -136,3 +136,11 @@ class OrderViewSet(ModelViewSet):
             return Order.objects.all()
         customer, create = Customer.objects.get_or_create(user=self.request.user)
         return Order.objects.filter(customer=customer).all()
+
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return serializers.CreateOrderSerializer
+        return serializers.OrderSerializer
+
+    def get_serializer_context(self, **kwargs):
+        return {'user': self.request.user}
