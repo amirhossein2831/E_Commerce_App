@@ -1,13 +1,15 @@
 from django.shortcuts import get_object_or_404
+from djoser import permissions
 from rest_framework import status
 from rest_framework.decorators import action
+from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, DestroyModelMixin
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.request import Request
 from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, GenericViewSet
 
 from . import serializers
-from .models import Customer, Collection, Product, Promotion, Review, Address
+from .models import Customer, Collection, Product, Promotion, Review, Address, Cart, CartItem
 from .permissoin import IsAuthAdminUserOrAuthReadOnly
 
 
@@ -53,7 +55,7 @@ class CustomerAddressViewSet(ModelViewSet):
     permission_classes = [IsAuthAdminUserOrAuthReadOnly]
 
     def get_queryset(self):
-        return Address.objects.filter(customer=self.kwargs['customers_pk'])
+        return Address.objects.filter(customer=self.kwargs['customers_pk']).all()
 
     def perform_create(self, serializer):
         serializer.save(customer=Customer(pk=self.kwargs['customers_pk']))
@@ -95,7 +97,30 @@ class ProductReviewViewSet(ModelViewSet):
     permission_classes = [IsAuthAdminUserOrAuthReadOnly]
 
     def get_queryset(self):
-        return Review.objects.filter(product=self.kwargs['products_pk'])
+        return Review.objects.filter(product=self.kwargs['products_pk']).all()
 
     def perform_create(self, serializer):
         serializer.save(product=Product(pk=self.kwargs['products_pk']))
+
+
+class CartViewSet(DestroyModelMixin, RetrieveModelMixin, CreateModelMixin, GenericViewSet):
+    queryset = Cart.objects.prefetch_related('items', 'items__product').all()
+    serializer_class = serializers.CartSerializer
+
+
+class CartItemViewSet(ModelViewSet):
+    queryset = CartItem.objects.all()
+    http_method_names = ['get', 'post', 'patch', 'delete']
+
+    def get_queryset(self):
+        return CartItem.objects.filter(cart=self.kwargs['carts_pk']).select_related('product').all()
+
+    def get_serializer_context(self):
+        return {'cart': self.kwargs['carts_pk']}
+
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return serializers.AddCartItemSerializer
+        if self.request.method in ['PATCH']:
+            return serializers.UpdateCartSerializer
+        return serializers.CartItemSerializer
