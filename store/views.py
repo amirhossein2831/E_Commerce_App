@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from . import serializers
-from .models import Customer, Collection, Product, Promotion, Review, Address
+from .models import Customer, Collection, Product, Promotion, Review, Address, Cart
 from .permissoin import IsAuthAdminUserOrAuthReadOnly
 
 
@@ -99,3 +99,8 @@ class ProductReviewViewSet(ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(product=Product(pk=self.kwargs['products_pk']))
+
+
+class CartViewSet(ModelViewSet):
+    queryset = Cart.objects.all()
+    serializer_class = serializers.CartSerializer
