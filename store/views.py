@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 
 from . import serializers
-from .models import Customer, Collection, Product, Promotion, Review, Address, Cart
+from .models import Customer, Collection, Product, Promotion, Review, Address, Cart, CartItem
 from .permissoin import IsAuthAdminUserOrAuthReadOnly
 
 
@@ -54,7 +54,7 @@ class CustomerAddressViewSet(ModelViewSet):
     permission_classes = [IsAuthAdminUserOrAuthReadOnly]
 
     def get_queryset(self):
-        return Address.objects.filter(customer=self.kwargs['customers_pk'])
+        return Address.objects.filter(customer=self.kwargs['customers_pk']).all()
 
     def perform_create(self, serializer):
         serializer.save(customer=Customer(pk=self.kwargs['customers_pk']))
@@ -96,7 +96,7 @@ class ProductReviewViewSet(ModelViewSet):
     permission_classes = [IsAuthAdminUserOrAuthReadOnly]
 
     def get_queryset(self):
-        return Review.objects.filter(product=self.kwargs['products_pk'])
+        return Review.objects.filter(product=self.kwargs['products_pk']).all()
 
     def perform_create(self, serializer):
         serializer.save(product=Product(pk=self.kwargs['products_pk']))
@@ -105,3 +105,11 @@ class ProductReviewViewSet(ModelViewSet):
 class CartViewSet(DestroyModelMixin, RetrieveModelMixin, CreateModelMixin, GenericViewSet):
     queryset = Cart.objects.prefetch_related('items', 'items__product').all()
     serializer_class = serializers.CartSerializer
+
+
+class CartItemViewSet(ModelViewSet):
+    queryset = CartItem.objects.all()
+    serializer_class = serializers.CartItemSerializer
+
+    def get_queryset(self):
+        return CartItem.objects.filter(cart=self.kwargs['carts_pk']).select_related('product').all()
