@@ -140,6 +140,11 @@ class OrderSerializer(serializers.ModelSerializer):
 class CreateOrderSerializer(serializers.Serializer):
     cart = serializers.PrimaryKeyRelatedField(queryset=Cart.objects.all())
 
+    @staticmethod
+    def validate_cart(value):
+        if CartItem.objects.filter(cart=value).count() == 0:
+            raise serializers.ValidationError('the cart is empty')
+
     @transaction.atomic
     def save(self, **kwargs):
         cart = self.validated_data['cart']
