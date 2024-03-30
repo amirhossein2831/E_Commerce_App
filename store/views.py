@@ -112,10 +112,13 @@ class CartItemViewSet(ModelViewSet):
     queryset = CartItem.objects.all()
     serializer_class = serializers.CartItemSerializer
 
+    def get_queryset(self):
+        return CartItem.objects.filter(cart=self.kwargs['carts_pk']).select_related('product').all()
+
+    def get_serializer_context(self):
+        return {'cart': self.kwargs['carts_pk']}
+
     def get_serializer_class(self):
         if self.request.method == 'POST':
             return serializers.AddCartItemSerializer
         return serializers.CartItemSerializer
-
-    def get_queryset(self):
-        return CartItem.objects.filter(cart=self.kwargs['carts_pk']).select_related('product').all()
