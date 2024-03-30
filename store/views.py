@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 
 from . import serializers
-from .models import Customer, Collection, Product, Promotion, Review, Address, Cart, CartItem
+from .models import Customer, Collection, Product, Promotion, Review, Address, Cart, CartItem, Order
 from .permissoin import IsAuthAdminUserOrAuthReadOnly
 
 
@@ -124,3 +124,15 @@ class CartItemViewSet(ModelViewSet):
         if self.request.method in ['PATCH']:
             return serializers.UpdateCartSerializer
         return serializers.CartItemSerializer
+
+
+class OrderViewSet(ModelViewSet):
+    queryset = Order.objects.all()
+    serializer_class = serializers.OrderSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        if self.request.user.is_staff or self.request.user.is_superuser:
+            return Order.objects.all()
+        customer, create = Customer.objects.get_or_create(user=self.request.user)
+        return Order.objects.filter(customer=customer).all()
