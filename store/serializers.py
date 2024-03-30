@@ -24,9 +24,9 @@ class CustomerAddressSerializer(serializers.ModelSerializer):
 
 
 class CollectionSerializer(serializers.ModelSerializer):
-    featured_product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all(), allow_null=True,
-                                                          required=False)
     products = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    featured_product = serializers.PrimaryKeyRelatedField(
+        queryset=Product.objects.all(), allow_null=True, required=False)
 
     class Meta:
         model = Collection
@@ -34,9 +34,9 @@ class CollectionSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    promotions = serializers.PrimaryKeyRelatedField(queryset=Promotion.objects.all(), many=True, allow_empty=True,
-                                                    required=False)
     slug = serializers.CharField(read_only=True)
+    promotions = serializers.PrimaryKeyRelatedField(
+        queryset=Promotion.objects.all(), many=True, allow_empty=True, required=False)
 
     class Meta:
         model = Product
@@ -44,8 +44,8 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class PromotionSerializer(serializers.ModelSerializer):
-    products = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all(), many=True, allow_empty=True,
-                                                  required=False)
+    products = serializers.PrimaryKeyRelatedField(
+        queryset=Product.objects.all(), many=True, allow_empty=True, required=False)
 
     class Meta:
         model = Promotion
