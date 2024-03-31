@@ -14,3 +14,12 @@ class UserFactory(factory.django.DjangoModelFactory):
     email = factory.Faker('email')
     password = factory.Faker('password')
 
+
+class CustomerFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Customer
+
+    user = factory.SubFactory(UserFactory)
+    phone = factory.Faker('phone_number')
+    birth_date = factory.Faker('date_of_birth')
+    membership = factory.Faker('random_element', elements=['B', 'S', 'G'])
