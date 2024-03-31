@@ -9,5 +9,6 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS('Seeding database...'))
         # Run the factory here
         # factory.AddressFactory.create_user_with_profile_addresses(user_size=1)
-        # factory.ProductFactory.create_collection_product_promotions(collections_size=1)
+        # factory.ProductFactory.create_collection_product_promotions_reviews(collections_size=1)
+        # factory.CartItemFactory.create_cart_cart_items(1)
         self.stdout.write(self.style.SUCCESS('Database seeded successfully'))

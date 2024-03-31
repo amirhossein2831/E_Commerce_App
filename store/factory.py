@@ -1,3 +1,4 @@
+import random
 import factory
 from django.conf import settings
 
@@ -64,13 +65,39 @@ class ProductFactory(factory.django.DjangoModelFactory):
     inventory = factory.Faker('random_int', min=0, max=1000)
 
     @staticmethod
-    def create_collection_product_promotions(collections_size, product_size=5, promotions_size=2,review_size=2):
+    def create_collection_product_promotions_reviews(collections_size, product_size=5, promotions_size=2,
+                                                     review_size=2):
+        # create collection
         collections = CollectionFactory.create_batch(collections_size)
+        # create product for each collection
         products_list = [ProductFactory.create_batch(product_size, collection=collection) for collection in collections]
 
         for products in products_list:
             for product in products:
+                # create review for each product
                 ReviewFactory.create_batch(review_size, product=product)
+                # create promotions for each product
                 promotions = PromotionFactory.create_batch(promotions_size)
                 product.promotions.set(promotions)
                 product.save()
+
+
+class CartFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Cart
+
+
+class CartItemFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = CartItem
+
+    quantity = random.randint(0, 10)
+
+    @staticmethod
+    def create_cart_cart_items(cart_size, item_size=5):
+        product_ids = Product.objects.only('id').values_list('id', flat=True)
+
+        carts = CartFactory.create_batch(cart_size)
+        for cart in carts:
+            for _ in range(item_size):
+                CartItemFactory.create(cart=cart, product_id=random.choice(product_ids))
