@@ -1,5 +1,4 @@
 from django.shortcuts import get_object_or_404
-from djoser import permissions
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, DestroyModelMixin
@@ -9,9 +8,8 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 
 from . import serializers
-from .models import Customer, Collection, Product, Promotion, Review, Address, Cart, CartItem, Order
+from .models import *
 from .permissoin import IsAuthAdminUserOrAuthReadOnly
-from .serializers import OrderSerializer, CreateOrderSerializer
 
 
 class CustomerViewSet(ModelViewSet):
