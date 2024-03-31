@@ -9,7 +9,8 @@ Welcome to the Django E-Commerce Hub, where we redefine your online shopping jou
 - [Virtual Environments](#virtual_env)
 - [Env file](#env_file)
 - [DB](#db)
--[Swagger](#swagger)
+- [Swagger](#swagger)
+- [Authors](#author)
 
 
 # Virtual Environments  <a name="virtual_env"></a>  
@@ -79,3 +80,25 @@ We use Swagger for API documentation, providing a clear overview of our API endp
 **Accessing Swagger Documentation:**
 
 Visit `host:port/swagger` or `host:port/redoc` to explore our API documentation and understand how to interact with our endpoints.
+
+# Authors <a name="authors"></a>
+
+This project was developed by our dedicated team of developers, committed to delivering high-quality software solutions:
+
+- [Amir Hossein Motaghian](https://github.com/johndoe)
+
+For inquiries or collaboration opportunities, feel free to reach out to any of our team members via their respective GitHub profiles.
+
+# Skills <a name="skills"></a>
+
+- **Backend Development:** Experienced in building robust backend systems using Python, Django
+- **Database Management:** Skilled in database design, optimization, and management MySQL
+- **API Development:** Expertise in designing and implementing RESTFUL documenting with Swagger, and testing with Postman.
+- **Security:** Well-versed in web application security principles, including authentication, authorization, and protection against common vulnerabilities.
+- **Agile Methodologies:** Practiced in Agile development methodologies such as Scrum and Kanban, fostering collaboration and delivering incremental value to stakeholders.
+- **Continuous Learning:** Committed to staying up-to-date with the latest technologies and best practices through continuous learning and participation in community events.
+- **Packages:** we give a thanks to the authors of these packages also:<br> 
+  1_django-debug-toolbar, 2_djangorestframework, 3_mysqlclient, 4_python-dotenv, 5_djoser <br>
+  6_djangorestframework-simplejwt, 7_drf-nested-routers, 8_drf-yasg
+
+Our diverse skill set enables us to tackle complex challenges and deliver innovative solutions to meet our clients' needs.
