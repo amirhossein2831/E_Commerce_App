@@ -45,6 +45,14 @@ class PromotionFactory(factory.django.DjangoModelFactory):
     discount = factory.Faker('random_int', min=1, max=50)
 
 
+class ReviewFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Review
+
+    title = factory.Faker('sentence', nb_words=4)
+    description = factory.Faker('text')
+
+
 class ProductFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Product
@@ -56,12 +64,13 @@ class ProductFactory(factory.django.DjangoModelFactory):
     inventory = factory.Faker('random_int', min=0, max=1000)
 
     @staticmethod
-    def create_collection_product_promotions(collections_size, product_size=5, promotions_size=2):
+    def create_collection_product_promotions(collections_size, product_size=5, promotions_size=2,review_size=2):
         collections = CollectionFactory.create_batch(collections_size)
         products_list = [ProductFactory.create_batch(product_size, collection=collection) for collection in collections]
 
         for products in products_list:
             for product in products:
+                ReviewFactory.create_batch(review_size, product=product)
                 promotions = PromotionFactory.create_batch(promotions_size)
                 product.promotions.set(promotions)
                 product.save()
