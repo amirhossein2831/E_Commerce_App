@@ -1,3 +1,4 @@
+import time
 from uuid import uuid4
 
 from django.conf import settings
@@ -11,13 +12,13 @@ class AuditableModel(models.Model):
         abstract = True
 
     created_at = models.DateTimeField(auto_now_add=True)
-    created_by = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name="+")
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name="+")
 
     updated_at = models.DateTimeField(auto_now=True)
-    updated_by = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name="+")
+    updated_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name="+")
 
     deleted_at = models.DateTimeField(blank=True, null=True)
-    deleted_by = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name="+")
+    deleted_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name="+")
 
 
 class Customer(AuditableModel):
@@ -32,8 +33,8 @@ class Customer(AuditableModel):
     ]
 
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True)
-    phone = models.CharField(max_length=11)
-    birth_date = models.DateField()
+    phone = models.CharField(max_length=11, null=True)
+    birth_date = models.DateField(null=True)
     membership = models.CharField(max_length=1, choices=MEMBERSHIP_PLAN, default=BRONZE_MEMBERSHIP)
 
     class Meta:
@@ -60,7 +61,6 @@ class Product(AuditableModel):
     inventory = models.PositiveIntegerField()
     collection = models.ForeignKey(Collection, on_delete=models.PROTECT, related_name='products')
     promotions = models.ManyToManyField(Promotion, related_name='products')
-
 
     def save(self, *args, **kwargs):
         if not self.slug:

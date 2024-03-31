@@ -1,5 +1,4 @@
 from django.shortcuts import get_object_or_404
-from djoser import permissions
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, DestroyModelMixin
@@ -9,30 +8,24 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 
 from . import serializers
-from .models import Customer, Collection, Product, Promotion, Review, Address, Cart, CartItem, Order
+from .models import *
 from .permissoin import IsAuthAdminUserOrAuthReadOnly
-from .serializers import OrderSerializer, CreateOrderSerializer
 
 
 class CustomerViewSet(ModelViewSet):
     queryset = Customer.objects.all()
+    serializer_class = serializers.CustomerSerializer
     permission_classes = [IsAdminUser]
-
-    def get_serializer_class(self):
-        if self.action in ['retrieve', 'update', 'partial_update']:
-            return serializers.MeCustomerSerializer
-        if self.request.method == 'PUT':
-            return serializers.MeCustomerSerializer
-        return serializers.CustomerSerializer
+    http_method_names = ['head', 'options', 'get', 'put', 'patch', 'delete']
 
     @action(detail=False, methods=['GET', 'PUT'], permission_classes=[IsAuthenticated])
     def me(self, request: Request) -> Response:
         customer = get_object_or_404(Customer, user=request.user)
         if request.method == 'GET':
-            serializer = serializers.MeCustomerSerializer(customer)
+            serializer = serializers.CustomerSerializer(customer)
             return Response(serializer.data, status=status.HTTP_200_OK)
         elif request.method == 'PUT':
-            serializer = serializers.MeCustomerSerializer(customer, request.data)
+            serializer = serializers.CustomerSerializer(customer, request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save(user=request.user)
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -140,8 +133,7 @@ class OrderViewSet(ModelViewSet):
         if self.request.user.is_staff or self.request.user.is_superuser:
             return (Order.objects.
                     prefetch_related('items', 'items__product', 'items__product__promotions').all())
-        customer, create = Customer.objects.get_or_create(user=self.request.user)
-        return (Order.objects.filter(customer=customer).
+        return (Order.objects.filter(customer_id=self.request.user.id).
                 prefetch_related('items', 'items__product', 'items__product__promotions').all())
 
     def get_serializer_class(self):

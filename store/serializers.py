@@ -6,12 +6,6 @@ from store.models import *
 class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
-        fields = ['user', 'phone', 'birth_date', 'membership']
-
-
-class MeCustomerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Customer
         fields = ['phone', 'birth_date', 'membership']
 
 
@@ -148,7 +142,7 @@ class CreateOrderSerializer(serializers.Serializer):
     @transaction.atomic
     def save(self, **kwargs):
         cart = self.validated_data['cart']
-        customer, created = Customer.objects.get_or_create(user=self.context.get('user'))
+        customer = Customer.objects.get(user=self.context.get('user'))
         order = Order.objects.create(customer=customer)
         cart_items = CartItem.objects.filter(cart=cart).select_related('product')
 
