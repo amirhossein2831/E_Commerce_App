@@ -15,6 +15,7 @@ djoser = "*"
 djangorestframework-simplejwt = "*"
 drf-nested-routers = "*"
 drf-yasg = "*"
+factory-boy = "*"
 
 [dev-packages]
 
