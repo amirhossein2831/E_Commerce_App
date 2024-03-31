@@ -135,8 +135,7 @@ class OrderViewSet(ModelViewSet):
         if self.request.user.is_staff or self.request.user.is_superuser:
             return (Order.objects.
                     prefetch_related('items', 'items__product', 'items__product__promotions').all())
-        customer, create = Customer.objects.get_or_create(user=self.request.user)
-        return (Order.objects.filter(customer=customer).
+        return (Order.objects.filter(customer_id=self.request.user.id).
                 prefetch_related('items', 'items__product', 'items__product__promotions').all())
 
     def get_serializer_class(self):
