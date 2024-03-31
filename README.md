@@ -7,6 +7,7 @@ Welcome to the Django E-Commerce Hub, where we redefine your online shopping jou
 ## Acknowledgements
 
 - [Virtual Environments](#virtual_env)
+- [Env file](#env_file)
 
 
 # Virtual Environments  <a name="virtual_env"></a>  
@@ -26,3 +27,24 @@ I prefer to use Pipenv which is a tool that simplifies Python dependency managem
   ```
 - [More about pipenv](https://pipenv.pypa.io/en/latest/)
 
+# Env File  <a name="envfile"></a>
+
+Environment variables are a way to store configuration settings or sensitive information that your application needs to function properly. They are typically stored in a file named `.env` in the root directory of your project. Here's a summary of how to use and manage environment variables in your project:
+
+- **Creating an Environment File**
+
+Create a file named `.env` in the root directory of your project. This file will store your environment variables.
+
+- **Adding Variables**
+
+Add your environment variables to the `.env` file using the `KEY=VALUE` format. For example:
+  
+  ```plaintext
+  CONNECTION=mysql,postgresql,...
+  NAME=db_name
+  ROOT=user_name_of_db
+  PASSWORD=your_password
+  HOST=your_host
+  PORT=app_port
+  PMA_PORT=db_port
+  ```
