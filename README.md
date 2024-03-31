@@ -11,6 +11,8 @@ Welcome to the Django E-Commerce Hub, where we redefine your online shopping jou
 - [DB](#db)
 - [Swagger](#swagger)
 - [Authors](#author)
+- [Skills](#skill)
+- [License](#license)
 
 
 # Virtual Environments  <a name="virtual_env"></a>  
@@ -102,3 +104,7 @@ For inquiries or collaboration opportunities, feel free to reach out to any of o
   6_djangorestframework-simplejwt, 7_drf-nested-routers, 8_drf-yasg
 
 Our diverse skill set enables us to tackle complex challenges and deliver innovative solutions to meet our clients' needs.
+
+# License <a name="license"></a>
+
+This project is licensed under the [MIT License](LICENSE), granting you the freedom to use, modify, and distribute the code for both commercial and non-commercial purposes. See the [LICENSE](LICENSE) file for more details.
