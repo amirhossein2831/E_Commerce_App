@@ -1,5 +1,6 @@
 from django.core.management import BaseCommand
 from store import factory
+from store.models import Address
 
 
 class Command(BaseCommand):
@@ -7,5 +8,5 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         self.stdout.write(self.style.SUCCESS('Seeding database...'))
-        factory.UserFactory.create_batch(2)
+        factory.AddressFactory.create_user_with_profile_addresses(user_size=1)
         self.stdout.write(self.style.SUCCESS('Database seeded successfully'))
