@@ -6,12 +6,6 @@ from store.models import *
 class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
-        fields = ['user', 'phone', 'birth_date', 'membership']
-
-
-class MeCustomerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Customer
         fields = ['phone', 'birth_date', 'membership']
 
 
