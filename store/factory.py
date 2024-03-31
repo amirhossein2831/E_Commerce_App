@@ -1,9 +1,6 @@
 import random
-from decimal import Decimal
-
 import factory
-from django.conf import settings
-
+from decimal import Decimal
 from store.models import *
 
 

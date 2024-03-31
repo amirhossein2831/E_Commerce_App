@@ -10,7 +10,8 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         try:
             with transaction.atomic():
-                # Run the factory here
+                self.stdout.write(self.style.SUCCESS('Seeding database...'))
+
                 factory.AddressFactory.create_user_with_profile_addresses(user_size=10)
                 factory.ProductFactory.create_collection_product_promotions_reviews(collections_size=10)
                 factory.CartItemFactory.create_cart_cart_items(10)
