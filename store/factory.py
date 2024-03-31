@@ -1,4 +1,6 @@
 import random
+from decimal import Decimal
+
 import factory
 from django.conf import settings
 
@@ -101,3 +103,30 @@ class CartItemFactory(factory.django.DjangoModelFactory):
         for cart in carts:
             for _ in range(item_size):
                 CartItemFactory.create(cart=cart, product_id=random.choice(product_ids))
+
+
+class OrderFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Order
+
+    created_at = factory.Faker('date_time_this_month', before_now=True)
+    payment_status = factory.Faker('random_element', elements=['P', 'C', 'F'])
+
+
+class OrderItemFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = OrderItem
+
+    quantity = factory.Faker('random_int', min=1, max=10)
+    unit_price = Decimal('10.00')
+
+    @staticmethod
+    def create_order_order_items(order_size, item_size=5):
+        customer_ids = Customer.objects.only('user_id').values_list('user_id', flat=True)
+        product_ids = Product.objects.only('id').values_list('id', flat=True)
+
+        orders = OrderFactory.create_batch(order_size, customer_id=random.choice(customer_ids))
+
+        for order in orders:
+            for _ in range(item_size):
+                OrderItemFactory.create(order=order, product_id=random.choice(product_ids))
