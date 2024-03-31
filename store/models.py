@@ -1,3 +1,4 @@
+import time
 from uuid import uuid4
 
 from django.conf import settings
@@ -32,8 +33,8 @@ class Customer(AuditableModel):
     ]
 
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True)
-    phone = models.CharField(max_length=11)
-    birth_date = models.DateField()
+    phone = models.CharField(max_length=11, null=True)
+    birth_date = models.DateField(null=True)
     membership = models.CharField(max_length=1, choices=MEMBERSHIP_PLAN, default=BRONZE_MEMBERSHIP)
 
     class Meta:
@@ -60,7 +61,6 @@ class Product(AuditableModel):
     inventory = models.PositiveIntegerField()
     collection = models.ForeignKey(Collection, on_delete=models.PROTECT, related_name='products')
     promotions = models.ManyToManyField(Promotion, related_name='products')
-
 
     def save(self, *args, **kwargs):
         if not self.slug:
