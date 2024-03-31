@@ -8,6 +8,7 @@ Welcome to the Django E-Commerce Hub, where we redefine your online shopping jou
 
 - [Virtual Environments](#virtual_env)
 - [Env file](#env_file)
+- [DB](#db)
 
 
 # Virtual Environments  <a name="virtual_env"></a>  
@@ -48,3 +49,15 @@ Add your environment variables to the `.env` file using the `KEY=VALUE` format. 
   PORT=app_port
   PMA_PORT=db_port
   ```
+
+# DB  <a name="db"></a>
+
+fortunately We utilize Docker to manage our database environment. Docker enables containerization, simplifying deployment across different environments.
+
+We leverage Docker Compose to define and run multi-container Docker applications. Docker Compose reads environment variables from a `.env` file, allowing flexible configuration. feel free to update the docker compose file as you need
+
+
+To start the database and related services, execute:
+```bash
+docker compose up 
+```
