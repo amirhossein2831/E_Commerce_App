@@ -16,23 +16,18 @@ from .serializers import OrderSerializer, CreateOrderSerializer
 
 class CustomerViewSet(ModelViewSet):
     queryset = Customer.objects.all()
+    serializer_class = serializers.CustomerSerializer
     permission_classes = [IsAdminUser]
-
-    def get_serializer_class(self):
-        if self.action in ['retrieve', 'update', 'partial_update']:
-            return serializers.MeCustomerSerializer
-        if self.request.method == 'PUT':
-            return serializers.MeCustomerSerializer
-        return serializers.CustomerSerializer
+    http_method_names = ['head', 'options', 'get', 'put', 'patch', 'delete']
 
     @action(detail=False, methods=['GET', 'PUT'], permission_classes=[IsAuthenticated])
     def me(self, request: Request) -> Response:
         customer = get_object_or_404(Customer, user=request.user)
         if request.method == 'GET':
-            serializer = serializers.MeCustomerSerializer(customer)
+            serializer = serializers.CustomerSerializer(customer)
             return Response(serializer.data, status=status.HTTP_200_OK)
         elif request.method == 'PUT':
-            serializer = serializers.MeCustomerSerializer(customer, request.data)
+            serializer = serializers.CustomerSerializer(customer, request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save(user=request.user)
             return Response(serializer.data, status=status.HTTP_200_OK)
