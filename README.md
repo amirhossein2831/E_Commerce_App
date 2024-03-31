@@ -61,3 +61,12 @@ To start the database and related services, execute:
 ```bash
 docker compose up 
 ```
+
+# Run Server <a name="run"></a>
+
+now you can run the app and send api :rocket: <br>
+while you are in pipenv shell run
+
+```bash
+python manage.py runserver
+```
