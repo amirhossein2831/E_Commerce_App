@@ -12,13 +12,13 @@ class AuditableModel(models.Model):
         abstract = True
 
     created_at = models.DateTimeField(auto_now_add=True)
-    created_by = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name="+")
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name="+")
 
     updated_at = models.DateTimeField(auto_now=True)
-    updated_by = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name="+")
+    updated_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name="+")
 
     deleted_at = models.DateTimeField(blank=True, null=True)
-    deleted_by = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name="+")
+    deleted_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name="+")
 
 
 class Customer(AuditableModel):
