@@ -9,6 +9,7 @@ Welcome to the Django E-Commerce Hub, where we redefine your online shopping jou
 - [Virtual Environments](#virtual_env)
 - [Env file](#env_file)
 - [DB](#db)
+-[Swagger](#swagger)
 
 
 # Virtual Environments  <a name="virtual_env"></a>  
@@ -65,8 +66,16 @@ docker compose up
 # Run Server <a name="run"></a>
 
 now you can run the app and send api :rocket: <br>
-while you are in pipenv shell run
 
 ```bash
+pipenv shell  # if you are not in pipenv shell
 python manage.py runserver
 ```
+
+# Swagger for API Documentation <a name="swagger"></a>
+
+We use Swagger for API documentation, providing a clear overview of our API endpoints and their functionalities.
+
+**Accessing Swagger Documentation:**
+
+Visit `host:port/swagger` or `host:port/redoc` to explore our API documentation and understand how to interact with our endpoints.
