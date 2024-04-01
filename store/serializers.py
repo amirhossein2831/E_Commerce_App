@@ -29,14 +29,21 @@ class CollectionSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'featured_product', 'products']
 
 
+class ProductImageSerializer(ModelSerializer):
+    class Meta:
+        model = ProductImage
+        fields = ['id', 'image']
+
+
 class ProductSerializer(serializers.ModelSerializer):
     slug = serializers.CharField(read_only=True)
+    images = ProductImageSerializer(many=True, read_only=True)
     promotions = serializers.PrimaryKeyRelatedField(
         queryset=Promotion.objects.all(), many=True, allow_empty=True, required=False)
 
     class Meta:
         model = Product
-        fields = ['id', 'title', 'slug', 'description', 'unit_price', 'inventory', 'collection', 'promotions']
+        fields = ['id', 'title', 'slug', 'description', 'unit_price', 'inventory', 'collection', 'promotions', 'images']
 
 
 class PromotionSerializer(serializers.ModelSerializer):
@@ -170,9 +177,3 @@ class UpdateOrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ['payment_status']
-
-
-class ProductImageSerializer(ModelSerializer):
-    class Meta:
-        model = ProductImage
-        fields = ['id', 'image']

@@ -62,7 +62,7 @@ class CollectionViewSet(ModelViewSet):
 
 
 class ProductViewSet(ModelViewSet):
-    queryset = Product.objects.prefetch_related('promotions').all()
+    queryset = Product.objects.prefetch_related('promotions', 'images').all()
     serializer_class = serializers.ProductSerializer
     permission_classes = [IsAuthAdminUserOrAuthReadOnly]
 
