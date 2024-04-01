@@ -5,6 +5,7 @@ from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.utils.text import slugify
+from .validators import validate_file_size
 
 
 class AuditableModel(models.Model):
@@ -70,7 +71,7 @@ class Product(AuditableModel):
 
 class ProductImage(AuditableModel):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
-    image = models.ImageField(upload_to='store/images')
+    image = models.ImageField(upload_to='store/images', validators=[validate_file_size])
 
 
 class Review(AuditableModel):
