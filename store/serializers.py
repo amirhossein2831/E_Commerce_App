@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from django.db import transaction
+from rest_framework.serializers import ModelSerializer
+
 from store.models import *
 
 
@@ -27,14 +29,21 @@ class CollectionSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'featured_product', 'products']
 
 
+class ProductImageSerializer(ModelSerializer):
+    class Meta:
+        model = ProductImage
+        fields = ['id', 'image']
+
+
 class ProductSerializer(serializers.ModelSerializer):
     slug = serializers.CharField(read_only=True)
+    images = ProductImageSerializer(many=True, read_only=True)
     promotions = serializers.PrimaryKeyRelatedField(
         queryset=Promotion.objects.all(), many=True, allow_empty=True, required=False)
 
     class Meta:
         model = Product
-        fields = ['id', 'title', 'slug', 'description', 'unit_price', 'inventory', 'collection', 'promotions']
+        fields = ['id', 'title', 'slug', 'description', 'unit_price', 'inventory', 'collection', 'promotions', 'images']
 
 
 class PromotionSerializer(serializers.ModelSerializer):
@@ -123,8 +132,10 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    placed_at = serializers.DateTimeField(source='created_at')
-    items = OrderItemSerializer(many=True)
+    customer = serializers.PrimaryKeyRelatedField(read_only=True)
+    payment_status = serializers.CharField(read_only=True)
+    placed_at = serializers.DateTimeField(source='created_at', read_only=True)
+    items = OrderItemSerializer(many=True, read_only=True)
 
     class Meta:
         model = Order
@@ -138,6 +149,7 @@ class CreateOrderSerializer(serializers.Serializer):
     def validate_cart(value):
         if CartItem.objects.filter(cart=value).count() == 0:
             raise serializers.ValidationError('the cart is empty')
+        return value
 
     @transaction.atomic
     def save(self, **kwargs):

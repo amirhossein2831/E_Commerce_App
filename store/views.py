@@ -62,7 +62,7 @@ class CollectionViewSet(ModelViewSet):
 
 
 class ProductViewSet(ModelViewSet):
-    queryset = Product.objects.prefetch_related('promotions').all()
+    queryset = Product.objects.prefetch_related('promotions', 'images').all()
     serializer_class = serializers.ProductSerializer
     permission_classes = [IsAuthAdminUserOrAuthReadOnly]
 
@@ -147,9 +147,20 @@ class OrderViewSet(ModelViewSet):
         return {'user': self.request.user}
 
     def create(self, request, *args, **kwargs):
-        serializer = CreateOrderSerializer(data=request.data, context=self.get_serializer_context())
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         order = serializer.save()
-        serializer = OrderSerializer(order)
+        serializer = serializers.OrderSerializer(order)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class ProductImageViewSet(ModelViewSet):
+    queryset = ProductImage.objects.all()
+    serializer_class = serializers.ProductImageSerializer
+
+    def get_queryset(self):
+        return ProductImage.objects.filter(product=self.kwargs['products_pk']).all()
+
+    def perform_create(self, serializer):
+        serializer.save(product_id=self.kwargs['products_pk'])
