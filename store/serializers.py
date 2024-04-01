@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from django.db import transaction
+from rest_framework.serializers import ModelSerializer
+
 from store.models import *
 
 
@@ -123,8 +125,10 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    placed_at = serializers.DateTimeField(source='created_at')
-    items = OrderItemSerializer(many=True)
+    customer = serializers.PrimaryKeyRelatedField(read_only=True)
+    payment_status = serializers.CharField(read_only=True)
+    placed_at = serializers.DateTimeField(source='created_at', read_only=True)
+    items = OrderItemSerializer(many=True, read_only=True)
 
     class Meta:
         model = Order
@@ -138,6 +142,7 @@ class CreateOrderSerializer(serializers.Serializer):
     def validate_cart(value):
         if CartItem.objects.filter(cart=value).count() == 0:
             raise serializers.ValidationError('the cart is empty')
+        return value
 
     @transaction.atomic
     def save(self, **kwargs):
