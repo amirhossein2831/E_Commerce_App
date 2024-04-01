@@ -158,3 +158,9 @@ class OrderViewSet(ModelViewSet):
 class ProductImageViewSet(ModelViewSet):
     queryset = ProductImage.objects.all()
     serializer_class = serializers.ProductImageSerializer
+
+    def get_queryset(self):
+        return ProductImage.objects.filter(product=self.kwargs['products_pk']).all()
+
+    def perform_create(self, serializer):
+        serializer.save(product_id=self.kwargs['products_pk'])

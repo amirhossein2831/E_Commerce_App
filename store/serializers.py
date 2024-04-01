@@ -173,8 +173,6 @@ class UpdateOrderSerializer(serializers.ModelSerializer):
 
 
 class ProductImageSerializer(ModelSerializer):
-    product = serializers.PrimaryKeyRelatedField(read_only=True)
-
     class Meta:
         model = ProductImage
-        fields = ['id', 'product', 'image']
+        fields = ['id', 'image']
