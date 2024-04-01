@@ -153,3 +153,8 @@ class OrderViewSet(ModelViewSet):
         serializer = serializers.OrderSerializer(order)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class ProductImageViewSet(ModelViewSet):
+    queryset = ProductImage.objects.all()
+    serializer_class = serializers.ProductImageSerializer
