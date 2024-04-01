@@ -170,3 +170,11 @@ class UpdateOrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ['payment_status']
+
+
+class ProductImageSerializer(ModelSerializer):
+    product = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    class Meta:
+        model = ProductImage
+        fields = ['id', 'product', 'image']
