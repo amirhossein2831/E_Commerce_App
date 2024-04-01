@@ -17,6 +17,7 @@ drf-nested-routers = "*"
 drf-yasg = "*"
 factory-boy = "*"
 pillow = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 
