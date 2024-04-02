@@ -18,12 +18,17 @@ from dotenv import load_dotenv
 # Load and extract from .env file
 load_dotenv()
 
+# DB VAR
 CONNECTION = os.getenv('CONNECTION')
 NAME = os.getenv('NAME')
 USER = os.getenv('ROOT')
 PASSWORD = os.getenv('PASSWORD')
 HOST = os.getenv('HOST')
 PORT = os.getenv('PORT')
+
+# EMAIL VAR
+TYPE = os.getenv('EMAIL_TYPE')
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -190,4 +195,19 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:8080',
     'http://127.0.0.1:8080',
 
+]
+
+# EMAIL SETTING
+
+EMAIL_BACKEND = f'django.core.mail.backends.{TYPE}.EmailBackend'
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = os.getenv('EMAIL_PORT')
+DEFAULT_FROM_EMAIL = 'Amirmemool12@gmail.com'
+
+# DEFINE ADMIN FOR SEND EMAIL
+
+ADMINS = [
+    ('<AmirHossein>', '<amirmemool12@gmail.com>'),
 ]
