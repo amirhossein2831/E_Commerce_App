@@ -18,6 +18,7 @@ drf-yasg = "*"
 factory-boy = "*"
 pillow = "*"
 django-cors-headers = "*"
+django-templated-mail = "*"
 
 [dev-packages]
 
