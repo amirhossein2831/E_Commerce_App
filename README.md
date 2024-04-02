@@ -131,7 +131,7 @@ GitHub profiles.
 - **Packages:** we give a thanks to the authors of these packages also:<br>
   1_django-debug-toolbar, 2_djangorestframework, 3_mysqlclient, 4_python-dotenv, 5_djoser <br>
   6_djangorestframework-simplejwt, 7_drf-nested-routers, 8_drf-yasg, 9_factory_boy,
-  10_pillow, 11_django-cors-headers, 12_django-templated-mail
+  10_pillow, 11_django-cors-headers, 12_django-templated-mail, 13_redis, 14_celery, 15_flower
 
 Our diverse skill set enables us to tackle complex challenges and deliver innovative solutions to meet our clients'
 needs.
