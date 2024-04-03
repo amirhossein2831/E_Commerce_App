@@ -21,6 +21,7 @@ migrations
 # Docker generated files/folder from config
 mysql
 data
+redis_data
 
 # prod files
 staticfiles
