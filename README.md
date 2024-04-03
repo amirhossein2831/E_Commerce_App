@@ -10,8 +10,10 @@ effortlessly, and enjoy a smooth checkout process. Join us as we revolutionize t
 
 - [Virtual Environments](#virtual_env)
 - [Env file](#env_file)
-- [DB](#db)
+- [DB && Docker](#db)
 - [Generate Fake DB Record](#factory)
+- [Email, Celery with Flower](#celery)
+- [Run Server](#run)
 - [Swagger](#swagger)
 - [Authors](#author)
 - [Skills](#skill)
@@ -44,33 +46,59 @@ summary of how to use and manage environment variables in your project:
 - **Creating an Environment File**
 
 Create a file named `.env` in the root directory of your project. This file will store your environment variables.
+you need to create variable for DB, redis, email connection
 
 - **Adding Variables**
 
 Add your environment variables to the `.env` file using the `KEY=VALUE` format. For example:
 
   ```plaintext
-  CONNECTION=mysql,postgresql,...
-  NAME=db_name
-  ROOT=user_name_of_db
-  PASSWORD=your_password
-  HOST=your_host
-  PORT=app_port
-  PMA_PORT=db_port
+  # DB Connection
+  
+  CONNECTION=mysql,sql,..
+  NAME=appname
+  ROOT=username
+  PASSWORD=password
+  HOST=hostname
+  PORT=portname
+  
+  # REDIS Connection
+  
+  REDIS_PORT=redisport
+  REDIS_PASSWORD=redispassword
+  FLOWER_PORT=flowerport
+  
+  # SMTP Connection
+  
+  EMAIL_TYPE=smtp,..
+  EMAIL_HOST=Emailhost
+  EMAIL_HOST_USER=username
+  EMAIL_HOST_PASSWORD=password
+  EMAIL_PORT=port
+
   ```
 
-# DB  <a name="db"></a>
+# DB && Dokcer <a name="db"></a>
 
 fortunately We utilize Docker to manage our database environment. Docker enables containerization, simplifying
 deployment across different environments.
 
 We leverage Docker Compose to define and run multi-container Docker applications. Docker Compose reads environment
-variables from a `.env` file, allowing flexible configuration. feel free to update the docker compose file as you need
+variables from a `.env` file and build from Dockerfile, allowing flexible configuration. feel free to update the docker
+compose file as you need
 
 To start the database and related services, execute:
 
 ```bash
-docker compose up 
+docker compose up --build  
+```
+
+once you run it with `--build` just run `docker compose up` unless you changed the docker file
+
+for running any command inside your container simple use `docker comopse run web command` EX:
+
+```bash
+docker compose run web python manage.py store_seed
 ```
 
 # Generate Fake DB Record  <a name="factory"></a>
@@ -83,20 +111,49 @@ provides a convenient and flexible way to define factory classes for generating 
   test environments.
 
 ```bash
-python manage.py store_seed
+docker compose run web python manage.py store_seed
 ```
 
 - some time may an error occur while seeding db but don't worry we use transaction so all record rollback
   and run it again
 
+# Email, Celery with Flower <a name="celery"></a>
+
+so app also support sending email for make it work you need to add your email server for that just add variable
+to `.env` file
+
+ ```plaintext
+ 
+  # SMTP Connection
+  
+  EMAIL_TYPE=smtp,..
+  EMAIL_HOST=Emailhost
+  EMAIL_HOST_USER=username
+  EMAIL_HOST_PASSWORD=password
+  EMAIL_PORT=port
+
+  ```
+
+as you now sending email or some task may take too much time so it's time to set up celery
+
+ ```plaintext
+
+  # REDIS Connection
+  
+  REDIS_PORT=redisport
+  REDIS_PASSWORD=redispassword
+  FLOWER_PORT=flowerport
+
+  ```
+
+add the variable to you `.env` file. you also have access to flower to find out about jobs
+
+make sure your dokcer compose is up with no error to enjoy celery
+
 # Run Server <a name="run"></a>
 
-now you can run the app and send api :rocket: <br>
-
-```bash
-pipenv shell  # if you are not in pipenv shell
-python manage.py runserver
-```
+for running server you don't need to run `python manage.py runserver` case we create a script that run migration and
+runserver you just need dto make sure the docker compose is up
 
 # Swagger for API Documentation <a name="swagger"></a>
 
