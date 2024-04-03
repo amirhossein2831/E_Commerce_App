@@ -44,9 +44,28 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-gx5wnf%w@p^&850i(9uhk%z8_ry7kxva_o8v7-bx+33mdq#h)8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+
 DEBUG = True
 
-ALLOWED_HOSTS = []
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': lambda request: True
+}
+
+# USER AND HOST
+
+AUTH_USER_MODEL = 'core.User'
+
+ADMINS = [
+    ('<AmirHossein>', '<amirmemool12@gmail.com>'),
+]
+
+ALLOWED_HOSTS = [
+    'localhost', '127.0.0.1', '0.0.0.0'
+]
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 
 # Application definition
 
@@ -116,7 +135,8 @@ DATABASES = {
 
 # CELERY SETTINGS
 
-CELERY_BROKER_URL = f'redis://localhost:{REDIS_PORT}/1'
+CELERY_BROKER_URL = f'redis://redis:{REDIS_PORT}/1'
+
 CELERY_BEAT_SCHEDULE = {
     'remove_empty_cart': {
         'task': 'store.tasks.remove_empty_cart',
@@ -168,6 +188,8 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# DRF
+
 REST_FRAMEWORK = {
     'COERCE_DECIMAL_PLACES': False,
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -178,6 +200,8 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10
 }
 
+# AUTH
+
 DJOSER = {
     'SERIALIZERS': {
         'user': 'core.serializers.UserCreateSerializer',
@@ -185,6 +209,13 @@ DJOSER = {
         'current_user': 'core.serializers.UserSerializer'
     }
 }
+
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('JWT',),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=5),
+}
+
+# SWAGGER
 
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {
@@ -194,16 +225,7 @@ SWAGGER_SETTINGS = {
     }
 }
 
-SIMPLE_JWT = {
-    'AUTH_HEADER_TYPES': ('JWT',),
-    "ACCESS_TOKEN_LIFETIME": timedelta(days=5),
-}
-
-AUTH_USER_MODEL = 'core.User'
-
-INTERNAL_IPS = [
-    "127.0.0.1",
-]
+# ALLOWED CORS
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:8001',
@@ -221,9 +243,3 @@ EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = os.getenv('EMAIL_PORT')
 DEFAULT_FROM_EMAIL = 'Amirmemool12@gmail.com'
-
-# DEFINE ADMIN FOR SEND EMAIL
-
-ADMINS = [
-    ('<AmirHossein>', '<amirmemool12@gmail.com>'),
-]
