@@ -9,7 +9,7 @@ from rest_framework.viewsets import ModelViewSet, GenericViewSet
 
 from . import serializers
 from .models import *
-from .permissoin import IsAuthAdminUserOrAuthReadOnly
+from .permissions import IsAuthAdminUserOrAuthReadOnly
 
 
 class CustomerViewSet(ModelViewSet):

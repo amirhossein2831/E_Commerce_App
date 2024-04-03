@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from datetime import timedelta
 from pathlib import Path
+
+from celery.schedules import crontab
 from dotenv import load_dotenv
 
 # Load and extract from .env file
@@ -26,9 +28,11 @@ PASSWORD = os.getenv('PASSWORD')
 HOST = os.getenv('HOST')
 PORT = os.getenv('PORT')
 
+# CELERY VAR
+REDIS_PORT = os.getenv('REDIS_PORT')
+
 # EMAIL VAR
 TYPE = os.getenv('EMAIL_TYPE')
-
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -107,6 +111,18 @@ DATABASES = {
         'PASSWORD': PASSWORD,
         'HOST': HOST,
         'PORT': PORT,
+    }
+}
+
+# CELERY SETTINGS
+
+CELERY_BROKER_URL = f'redis://localhost:{REDIS_PORT}/1'
+CELERY_BEAT_SCHEDULE = {
+    'remove_empty_cart': {
+        'task': 'store.tasks.remove_empty_cart',
+        'schedule': crontab(day_of_week=1, hour=12, minute=1),
+        # 'args: [args],
+        # 'kwargs': {}
     }
 }
 

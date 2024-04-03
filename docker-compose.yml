@@ -22,3 +22,12 @@ services:
     environment:
       PMA_HOST: mysql
       PMA_PORT: 3306
+
+  redis:
+    image: redis:latest
+    container_name: redis_holding
+    restart: always
+    ports:
+      - "${REDIS_PORT}:6379"
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}

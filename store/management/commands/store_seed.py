@@ -1,7 +1,7 @@
 from django.core.management import BaseCommand
 from django.db import transaction
 
-from store import factory
+from store import factories
 
 
 class Command(BaseCommand):
