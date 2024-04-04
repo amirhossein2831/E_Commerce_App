@@ -2,6 +2,7 @@ version: '3.9'
 
 services:
   web:
+    container_name: web
     build: .
     command: ./scripts/wait-for-it.sh mysql:3306 -- ./scripts/docker-entrypoint.sh
     ports:
