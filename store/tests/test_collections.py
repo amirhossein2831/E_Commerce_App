@@ -2,7 +2,7 @@ import pytest
 from model_bakery import baker
 from rest_framework import status
 
-from store.models import Collection
+from store.models import Collection, Product
 
 
 @pytest.fixture
@@ -92,6 +92,16 @@ class TestCommandCollection:
 
         assert response.status_code == status.HTTP_200_OK
         assert response.data['title'] == updated_title
+
+    @pytest.mark.django_db
+    def test_delete_if_data_is_invalid_return_400(self, authenticated_client, api_client):
+        authenticated_client(is_staff=True)
+        products = baker.make(Product, _quantity=2, slug='test')
+        collection = baker.make(Collection, products=products)
+
+        response = api_client.delete(f'/store/collections/{collection.id}/')
+
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
 
     @pytest.mark.django_db
     def test_delete_if_user_is_admin_return_204(self, authenticated_client, api_client):
