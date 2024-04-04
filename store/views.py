@@ -5,6 +5,7 @@ from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, DestroyM
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.request import Request
 from rest_framework.response import Response
+from rest_framework import exceptions
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 
 from . import serializers
@@ -59,6 +60,13 @@ class CollectionViewSet(ModelViewSet):
     queryset = Collection.objects.prefetch_related('products').all()
     serializer_class = serializers.CollectionSerializer
     permission_classes = [IsAuthAdminUserOrAuthReadOnly]
+
+
+    def perform_destroy(self, instance):
+        if instance.products.count() > 0:
+            raise exceptions.ValidationError("Cannot delete a collection with associated products.")
+        instance.delete()
+
 
 
 class ProductViewSet(ModelViewSet):

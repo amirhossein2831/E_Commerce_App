@@ -2,6 +2,7 @@ version: '3.9'
 
 services:
   web:
+    container_name: web
     build: .
     command: ./scripts/wait-for-it.sh mysql:3306 -- ./scripts/docker-entrypoint.sh
     ports:
@@ -57,8 +58,8 @@ services:
       - celery
     environment:
       - DEBUG=1
-      - CELERY_BROKER=redis://redis:${RESID_PORT}/1
-      - CELERY_BACKEND=redis://redis:${RESID_PORT}/1
+      - CELERY_BROKER=redis://redis:${REDIS_PORT}/1
+      - CELERY_BACKEND=redis://redis:${REDIS_PORT}/1
     ports:
       - "5555:5555"
 

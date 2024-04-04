@@ -10,7 +10,6 @@ RUN apt-get update \
 
 # Install pipenv
 RUN pip install --upgrade pip
-RUN pip install virtualenv
 RUN pip install pipenv
 
 # Install application dependencies
