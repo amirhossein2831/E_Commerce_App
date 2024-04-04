@@ -26,6 +26,8 @@ flower = "*"
 [dev-packages]
 pytest = "*"
 pytest-django = "*"
+model-bakery = "*"
+pytest-watch = "*"
 
 [requires]
 python_version = "3.10"
