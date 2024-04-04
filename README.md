@@ -14,6 +14,7 @@ effortlessly, and enjoy a smooth checkout process. Join us as we revolutionize t
 - [Generate Fake DB Record](#factory)
 - [Email, Celery with Flower](#celery)
 - [Run Server](#run)
+- [Automation Test](#test)
 - [Swagger](#swagger)
 - [Authors](#author)
 - [Skills](#skill)
@@ -98,7 +99,7 @@ once you run it with `--build` just run `docker compose up` unless you changed t
 for running any command inside your container simple use `docker comopse run web command` EX:
 
 ```bash
-docker compose run web python manage.py store_seed
+docker compose exec web python manage.py store_seed
 ```
 
 # Generate Fake DB Record  <a name="factory"></a>
@@ -111,7 +112,7 @@ provides a convenient and flexible way to define factory classes for generating 
   test environments.
 
 ```bash
-docker compose run web python manage.py store_seed
+docker compose exec web python manage.py store_seed
 ```
 
 - some time may an error occur while seeding db but don't worry we use transaction so all record rollback
@@ -155,6 +156,17 @@ make sure your dokcer compose is up with no error to enjoy celery
 for running server you don't need to run `python manage.py runserver` case we create a script that run migration and
 runserver you just need dto make sure the docker compose is up
 
+# Automation Test <a name="test"></a>
+
+automation test is a solid way to test the api without too much pain.I prefer to pytest for testing which is a very
+simple and full feature framework for testing app
+
+```bash
+docker compose exec web pytest -W ingore
+```
+
+simply use for testing and for current deprecation of a package in pytest we get a warning so simply ignore it
+
 # Swagger for API Documentation <a name="swagger"></a>
 
 We use Swagger for API documentation, providing a clear overview of our API endpoints and their functionalities.
@@ -188,7 +200,8 @@ GitHub profiles.
 - **Packages:** we give a thanks to the authors of these packages also:<br>
   1_django-debug-toolbar, 2_djangorestframework, 3_mysqlclient, 4_python-dotenv, 5_djoser <br>
   6_djangorestframework-simplejwt, 7_drf-nested-routers, 8_drf-yasg, 9_factory_boy,
-  10_pillow, 11_django-cors-headers, 12_django-templated-mail, 13_redis, 14_celery, 15_flower
+  10_pillow, 11_django-cors-headers, 12_django-templated-mail, 13_redis, 14_celery, 15_flower,
+  12_pytest, 13_pytest-django, 14_model-bakery, 15_pytest-watch
 
 Our diverse skill set enables us to tackle complex challenges and deliver innovative solutions to meet our clients'
 needs.
