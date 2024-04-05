@@ -22,6 +22,7 @@ migrations
 mysql
 data
 redis_data
+/static
 
 # prod files
 staticfiles
