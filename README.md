@@ -198,10 +198,10 @@ GitHub profiles.
 - **Continuous Learning:** Committed to staying up-to-date with the latest technologies and best practices through
   continuous learning and participation in community events.
 - **Packages:** we give a thanks to the authors of these packages also:<br>
-  1_django-debug-toolbar, 2_djangorestframework, 3_mysqlclient, 4_python-dotenv, 5_djoser <br>
+  1_django-debug-toolbar, 2_djangorestframework, 3_mysqlclient, 4_python-dotenv, 5_djoser 
   6_djangorestframework-simplejwt, 7_drf-nested-routers, 8_drf-yasg, 9_factory_boy,
   10_pillow, 11_django-cors-headers, 12_django-templated-mail, 13_redis, 14_celery, 15_flower,
-  12_pytest, 13_pytest-django, 14_model-bakery, 15_pytest-watch
+  12_pytest, 13_pytest-django, 14_model-bakery, 15_pytest-watch, 16_django-redis
 
 Our diverse skill set enables us to tackle complex challenges and deliver innovative solutions to meet our clients'
 needs.
